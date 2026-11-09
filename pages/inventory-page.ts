@@ -4,10 +4,16 @@ import { HeaderComponent } from '../components/header-component';
 export class InventoryPage {
     readonly headerComponent: HeaderComponent;
     readonly products: Locator;
+    readonly sortDropdown: Locator;
+    readonly productNames: Locator;
+    readonly productPrices: Locator;
 
     constructor(readonly page: Page) {
         this.headerComponent = new HeaderComponent(this.page);
         this.products = this.page.getByTestId('inventory-item');
+        this.sortDropdown = this.page.getByTestId('product-sort-container');
+        this.productNames = this.page.getByTestId('inventory-item-name');
+        this.productPrices = this.page.getByTestId('inventory-item-price');
     }
 
     async goto() {
@@ -32,5 +38,9 @@ export class InventoryPage {
 
     async clickRemoveFromCartButton(productName: string) {
         await this.removeFromCartButton(productName).click();
+    }
+
+    async sortBy(option: 'az' | 'za' | 'lohi' | 'hilo') {
+        await this.sortDropdown.selectOption(option);
     }
 }
