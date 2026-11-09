@@ -40,7 +40,7 @@ export class InventoryPage {
         await this.removeFromCartButton(productName).click();
     }
 
-    async sortBy(option: 'az' | 'za' | 'lohi' | 'hilo') {
+    async sortBy(option: 'za' | 'lohi' | 'hilo') {
         await this.sortDropdown.selectOption(option);
     }
 }

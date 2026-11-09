@@ -5,7 +5,7 @@ test.describe('product filter', () => {
         await pm.onInventoryPage().goto();
     });
 
-    test('should sort products by name from A to Z', async ({ pm }) => {
+    test('should show products sorted by name from A to Z by default', async ({ pm }) => {
         const productNames = await pm.onInventoryPage().productNames.allTextContents();
 
         expect(productNames).toEqual([...productNames].sort((a, b) => a.localeCompare(b)));
