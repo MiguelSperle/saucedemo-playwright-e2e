@@ -4,14 +4,14 @@ import { HeaderComponent } from '../components/header-component';
 export class InventoryPage {
     readonly headerComponent: HeaderComponent;
     readonly products: Locator;
-    readonly sortDropdown: Locator;
+    readonly sortProduct: Locator;
     readonly productNames: Locator;
     readonly productPrices: Locator;
 
     constructor(readonly page: Page) {
         this.headerComponent = new HeaderComponent(this.page);
         this.products = this.page.getByTestId('inventory-item');
-        this.sortDropdown = this.page.getByTestId('product-sort-container');
+        this.sortProduct = this.page.getByTestId('product-sort-container');
         this.productNames = this.page.getByTestId('inventory-item-name');
         this.productPrices = this.page.getByTestId('inventory-item-price');
     }
@@ -41,6 +41,6 @@ export class InventoryPage {
     }
 
     async sortBy(option: 'za' | 'lohi' | 'hilo') {
-        await this.sortDropdown.selectOption(option);
+        await this.sortProduct.selectOption(option);
     }
 }
