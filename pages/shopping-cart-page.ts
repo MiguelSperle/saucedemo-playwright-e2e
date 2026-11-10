@@ -4,10 +4,12 @@ import { HeaderComponent } from '../components/header-component';
 export class ShoppingCartPage {
     readonly headerComponent: HeaderComponent;
     readonly products: Locator;
+    readonly checkoutButton: Locator;
 
     constructor(readonly page: Page) {
         this.headerComponent = new HeaderComponent(page);
         this.products = this.page.getByTestId('inventory-item');
+        this.checkoutButton = this.page.getByRole('button', { name: 'checkout' });
     }
 
     async goto() {
@@ -24,5 +26,9 @@ export class ShoppingCartPage {
 
     async clickRemoveFromCartButton(productName: string) {
         await this.removeFromCartButton(productName).click();
+    }
+
+    async clickCheckoutButton() {
+        await this.checkoutButton.click();
     }
 }
