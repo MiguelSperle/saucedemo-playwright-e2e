@@ -7,7 +7,7 @@ test.describe('authentication', () => {
   });
 
   test('should authenticate successfully', async ({ pm, page }) => {
-    await pm.onAuthenticationPage().authenticate(users.STANDARD_USER.username, users.STANDARD_USER.password);
+    await pm.onAuthenticationPage().authenticate(users.STANDARD_USER.credentials.username, users.STANDARD_USER.credentials.password);
 
     await expect(page).toHaveURL('/inventory.html');
   });
@@ -19,13 +19,13 @@ test.describe('authentication', () => {
   });
 
   test('should display an error when password is empty', async ({ pm }) => {
-    await pm.onAuthenticationPage().authenticate(users.STANDARD_USER.username, '');
+    await pm.onAuthenticationPage().authenticate(users.STANDARD_USER.credentials.username, '');
 
     await expect(pm.onAuthenticationPage().error).toHaveText('Epic sadface: Password is required');
   });
 
   test('should display an error when credentials are incorrect', async ({ pm }) => {
-    await pm.onAuthenticationPage().authenticate(users.INVALID_USER.username, users.INVALID_USER.password);
+    await pm.onAuthenticationPage().authenticate(users.INVALID_USER.credentials.username, users.INVALID_USER.credentials.password);
 
     await expect(pm.onAuthenticationPage().error).toHaveText('Epic sadface: Username and password do not match any user in this service');
   });

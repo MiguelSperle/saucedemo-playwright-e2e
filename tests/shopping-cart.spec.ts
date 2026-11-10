@@ -102,5 +102,12 @@ test.describe('shopping cart', () => {
             await expect(pm.onShoppingCartPage().headerComponent.shoppingCartBadge).toBeHidden();
             await expect(pm.onShoppingCartPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeHidden();
         });
+
+        test('should remove only one product when multiple products have been added to the shopping cart', async ({ pm, shoppingCartWithMultipleProducts }) => {
+            await pm.onShoppingCartPage().clickRemoveFromCartButton(products.BACKPACK_PRODUCT.name);
+
+            await expect(pm.onShoppingCartPage().headerComponent.shoppingCartBadge).toHaveText('1');
+            await expect(pm.onShoppingCartPage().productFilter(products.BIKE_LIGHT_PRODUCT.name)).toBeVisible();
+        });
     });
 });

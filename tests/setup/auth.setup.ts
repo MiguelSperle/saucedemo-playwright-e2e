@@ -16,7 +16,7 @@ setup('configure authentication state', async ({ page }) => {
   await page.context().addCookies([
     {
       name: 'session-username',
-      value: users.STANDARD_USER.username,
+      value: users.STANDARD_USER.credentials.username,
       domain: 'www.saucedemo.com',
       path: '/',
       httpOnly: false,
