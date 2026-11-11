@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { PageManager } from '../pages/manager/PageManager';
 import { products } from '../data/products';
 
@@ -31,7 +31,7 @@ export const test = base.extend<TestFixtures>({
             window.localStorage.setItem('cart-contents', JSON.stringify([product.id]));
         }, products.BACKPACK_PRODUCT);
 
-        await page.reload();
+        await page.reload({ waitUntil: 'load' });
 
         await use();
     },
@@ -43,7 +43,7 @@ export const test = base.extend<TestFixtures>({
             ]));
         }, products);
 
-        await page.reload();
+        await page.reload({ waitUntil: 'load' });
 
         await use();
     }

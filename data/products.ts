@@ -1,11 +1,11 @@
-type ProductInfo = {
+type ProductInformation = {
     id: number;
     name: string;
 };
 
 type Products = {
-    BACKPACK_PRODUCT: ProductInfo;
-    BIKE_LIGHT_PRODUCT: ProductInfo;
+    BACKPACK_PRODUCT: ProductInformation;
+    BIKE_LIGHT_PRODUCT: ProductInformation;
 };
 
 export const products: Products = {
