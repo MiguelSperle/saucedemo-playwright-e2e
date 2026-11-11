@@ -16,6 +16,7 @@ test.describe('shopping cart', () => {
             await pm.onInventoryPage().headerComponent.clickShoppingCartLink();
 
             await expect(page).toHaveURL('/cart.html');
+            await expect(pm.onShoppingCartPage().products).toHaveCount(1);
             await expect(pm.onShoppingCartPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeVisible();
         });
 
@@ -30,6 +31,7 @@ test.describe('shopping cart', () => {
             await pm.onInventoryPage().headerComponent.clickShoppingCartLink();
 
             await expect(page).toHaveURL('/cart.html');
+            await expect(pm.onShoppingCartPage().products).toHaveCount(2);
             await expect(pm.onShoppingCartPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeVisible();
             await expect(pm.onShoppingCartPage().productFilter(products.BIKE_LIGHT_PRODUCT.name)).toBeVisible();
         });
@@ -43,7 +45,7 @@ test.describe('shopping cart', () => {
             await pm.onInventoryPage().headerComponent.clickShoppingCartLink();
 
             await expect(page).toHaveURL('/cart.html');
-            await expect(pm.onShoppingCartPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeHidden();
+            await expect(pm.onShoppingCartPage().products).toHaveCount(0);
         });
 
         test('should remove only one product when multiple products have been added to the shopping cart', async ({ pm, shoppingCartWithMultipleProducts, page }) => {
@@ -56,7 +58,7 @@ test.describe('shopping cart', () => {
             await pm.onInventoryPage().headerComponent.clickShoppingCartLink();
 
             await expect(page).toHaveURL('/cart.html');
-            await expect(pm.onShoppingCartPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeHidden();
+            await expect(pm.onShoppingCartPage().products).toHaveCount(1);
             await expect(pm.onShoppingCartPage().productFilter(products.BIKE_LIGHT_PRODUCT.name)).toBeVisible();
         });
     });
@@ -75,6 +77,7 @@ test.describe('shopping cart', () => {
             await pm.onProductDetailsPage().headerComponent.clickShoppingCartLink();
 
             await expect(page).toHaveURL('/cart.html');
+            await expect(pm.onShoppingCartPage().products).toHaveCount(1);
             await expect(pm.onShoppingCartPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeVisible();
         });
 
@@ -87,7 +90,7 @@ test.describe('shopping cart', () => {
             await pm.onProductDetailsPage().headerComponent.clickShoppingCartLink();
 
             await expect(page).toHaveURL('/cart.html');
-            await expect(pm.onShoppingCartPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeHidden();
+            await expect(pm.onShoppingCartPage().products).toHaveCount(0);
         });
     });
 
@@ -100,13 +103,14 @@ test.describe('shopping cart', () => {
             await pm.onShoppingCartPage().clickRemoveFromCartButton(products.BACKPACK_PRODUCT.name);
 
             await expect(pm.onShoppingCartPage().headerComponent.shoppingCartBadge).toBeHidden();
-            await expect(pm.onShoppingCartPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeHidden();
+            await expect(pm.onShoppingCartPage().products).toHaveCount(0);
         });
 
         test('should remove only one product when multiple products have been added to the shopping cart', async ({ pm, shoppingCartWithMultipleProducts }) => {
             await pm.onShoppingCartPage().clickRemoveFromCartButton(products.BACKPACK_PRODUCT.name);
 
             await expect(pm.onShoppingCartPage().headerComponent.shoppingCartBadge).toHaveText('1');
+            await expect(pm.onShoppingCartPage().products).toHaveCount(1);
             await expect(pm.onShoppingCartPage().productFilter(products.BIKE_LIGHT_PRODUCT.name)).toBeVisible();
         });
     });

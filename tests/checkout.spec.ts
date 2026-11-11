@@ -19,6 +19,7 @@ test.describe('checkout', () => {
         );
 
         await expect(page).toHaveURL('/checkout-step-two.html');
+        await expect(pm.onCheckoutPage().products).toHaveCount(1);
         await expect(pm.onCheckoutPage().productFilter(products.BACKPACK_PRODUCT.name)).toBeVisible();
         await expect(pm.onCheckoutPage().totalAmount).toBeVisible();
 
