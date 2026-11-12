@@ -7,7 +7,7 @@ test.describe('authentication', () => {
     await pm.onAuthenticationPage().goto();
   });
 
-  test('should authenticate successfully', async ({ pm, page }) => {
+  test('should authenticate successfully', { tag: '@smoke' }, async ({ pm, page }) => {
     await pm.onAuthenticationPage().authenticate(users.STANDARD_USER.credentials.username, users.STANDARD_USER.credentials.password);
 
     await expect(page).toHaveURL('/inventory.html');
