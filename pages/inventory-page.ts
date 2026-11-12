@@ -7,6 +7,8 @@ export class InventoryPage {
     readonly sortProduct: Locator;
     readonly productNames: Locator;
     readonly productPrices: Locator;
+    readonly openMenuButton: Locator;
+    readonly logoutLink: Locator;
 
     constructor(readonly page: Page) {
         this.headerComponent = new HeaderComponent(this.page);
@@ -14,6 +16,8 @@ export class InventoryPage {
         this.sortProduct = this.page.getByTestId('product-sort-container');
         this.productNames = this.page.getByTestId('inventory-item-name');
         this.productPrices = this.page.getByTestId('inventory-item-price');
+        this.openMenuButton = this.page.getByRole('button', { name: 'Open Menu' });
+        this.logoutLink = this.page.getByTestId('logout-sidebar-link');
     }
 
     async goto() {
@@ -42,5 +46,10 @@ export class InventoryPage {
 
     async sortBy(option: 'za' | 'lohi' | 'hilo') {
         await this.sortProduct.selectOption(option);
+    }
+
+    async logout() {
+        await this.openMenuButton.click();
+        await this.logoutLink.click();
     }
 }

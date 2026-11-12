@@ -1,4 +1,7 @@
 import { test, expect } from '../fixtures';
+import { AUTH_STATE_PATH } from '../config/auth-state';
+
+test.use({ storageState: AUTH_STATE_PATH });
 
 test.describe('product filter', () => {
     test.beforeEach(async ({ pm }) => {

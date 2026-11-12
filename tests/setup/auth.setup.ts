@@ -1,5 +1,6 @@
 import { test as setup, expect } from '../../fixtures';
 import { users } from '../../data/users';
+import { AUTH_STATE_PATH } from '../../config/auth-state';
 
 /**
  * Configuração do estado de autenticação para os testes E2E.
@@ -9,8 +10,6 @@ import { users } from '../../data/users';
  * Caso a API de autenticação não esteja disponível, o estado autenticado pode
  * ser simulado por meio da injeção direta com cookies ou com localStorage no contexto do navegador.
 **/
-
-const authFile: string = 'playwright/.auth/user.json';
 
 setup('configure authentication state', async ({ page }) => {
   await page.context().addCookies([
@@ -25,5 +24,5 @@ setup('configure authentication state', async ({ page }) => {
     }
   ]);
 
-  await page.context().storageState({ path: authFile });
+  await page.context().storageState({ path: AUTH_STATE_PATH });
 }); 

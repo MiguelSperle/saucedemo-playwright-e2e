@@ -1,24 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-const authFile = 'playwright/.auth/user.json';
-
-const browsers = [
-  { name: 'chromium', device: devices['Desktop Chrome'] },
-  { name: 'firefox', device: devices['Desktop Firefox'] },
-  { name: 'webkit', device: devices['Desktop Safari'] },
-];
-
-// Define guest specs
-const guestSpecs = ['**/authentication.spec.ts'];
-
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true, /* Run tests in files in parallel */
@@ -32,22 +13,27 @@ export default defineConfig({
     testIdAttribute: 'data-test',
   },
   projects: [
-    // SETUP
-    { name: 'setup', testMatch: '**/auth.setup.ts' },
+    {
+      name: 'setup',
+      testMatch: '**/auth.setup.ts'
+    },
 
-    // GUEST 
-    ...browsers.map(({ name, device }) => ({
-      name: `guest-${name}`,
-      testMatch: guestSpecs,
-      use: { ...device },
-    })),
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup']
+    },
 
-    // AUTHENTICATED
-    ...browsers.map(({ name, device }) => ({
-      name: `authenticated-${name}`,
-      testIgnore: ['**/auth.setup.ts', ...guestSpecs],
-      use: { ...device, storageState: authFile },
-      dependencies: ['setup'],
-    })),
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+      dependencies: ['setup']
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+      dependencies: ['setup']
+    }
   ],
 });

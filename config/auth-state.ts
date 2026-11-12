@@ -1,0 +1,1 @@
+export const AUTH_STATE_PATH: string = 'playwright/.auth/user.json';

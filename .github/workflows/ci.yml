@@ -19,15 +19,15 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6 
+    - uses: actions/setup-node@v6
       with:
         node-version: lts/*
         cache: npm
     - run: npm ci
     - run: npx playwright install --with-deps
     - run: npx playwright test
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v6
       if: ${{ !cancelled() }}
       with:
         name: playwright-report-full
@@ -42,15 +42,15 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: lts/*
         cache: npm
     - run: npm ci
     - run: npx playwright install --with-deps chromium
-    - run: npx playwright test --grep @smoke --project=guest-chromium --project=authenticated-chromium
-    - uses: actions/upload-artifact@v4
+    - run: npx playwright test --grep @smoke --project=chromium
+    - uses: actions/upload-artifact@v6
       if: ${{ !cancelled() }}
       with:
         name: playwright-report-smoke

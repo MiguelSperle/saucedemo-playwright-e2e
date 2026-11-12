@@ -2,6 +2,9 @@ import { test, expect } from '../fixtures';
 import { users } from '../data/users';
 import { products } from '../data/products';
 import { errorMessages } from '../data/error-messages';
+import { AUTH_STATE_PATH } from '../config/auth-state';
+
+test.use({ storageState: AUTH_STATE_PATH });
 
 test.describe('checkout', () => {
     test.beforeEach(async ({ pm }) => {
