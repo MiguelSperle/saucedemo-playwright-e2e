@@ -7,7 +7,7 @@ test.describe('shopping cart', () => {
             await pm.onInventoryPage().goto();
         });
 
-        test('should add a product to the shopping cart', async ({ pm, page }) => {
+        test('should add a product to the shopping cart', { tag: '@smoke' }, async ({ pm, page }) => {
             await pm.onInventoryPage().clickAddToCartButton(products.BACKPACK_PRODUCT.name);
 
             await expect(pm.onInventoryPage().headerComponent.shoppingCartBadge).toHaveText('1');
@@ -68,7 +68,7 @@ test.describe('shopping cart', () => {
             await pm.onProductDetailsPage().goto(products.BACKPACK_PRODUCT.id);
         });
 
-        test('should add a product to the shopping cart', async ({ pm, page }) => {
+        test('should add a product to the shopping cart', { tag: '@smoke' }, async ({ pm, page }) => {
             await pm.onProductDetailsPage().clickAddToCartButton();
 
             await expect(pm.onProductDetailsPage().headerComponent.shoppingCartBadge).toHaveText('1');
@@ -99,7 +99,7 @@ test.describe('shopping cart', () => {
             await pm.onShoppingCartPage().goto();
         });
 
-        test('should remove an added product from the shopping cart', async ({ pm, shoppingCartWithProduct }) => {
+        test('should remove an added product from the shopping cart', { tag: '@smoke' }, async ({ pm, shoppingCartWithProduct }) => {
             await pm.onShoppingCartPage().clickRemoveFromCartButton(products.BACKPACK_PRODUCT.name);
 
             await expect(pm.onShoppingCartPage().headerComponent.shoppingCartBadge).toBeHidden();

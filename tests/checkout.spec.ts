@@ -8,7 +8,7 @@ test.describe('checkout', () => {
         await pm.onShoppingCartPage().goto()
     });
 
-    test('should complete the checkout process successfully', async ({ pm, shoppingCartWithProduct, page }) => {
+    test('should complete the checkout process successfully', { tag: '@smoke' }, async ({ pm, shoppingCartWithProduct, page }) => {
         await pm.onShoppingCartPage().clickCheckoutButton();
 
         await expect(page).toHaveURL('/checkout-step-one.html');
