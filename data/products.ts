@@ -1,14 +1,11 @@
-type ProductInformation = {
+type Product = {
     id: number;
     name: string;
 };
 
-type Products = {
-    BACKPACK_PRODUCT: ProductInformation;
-    BIKE_LIGHT_PRODUCT: ProductInformation;
-};
+type ProductKey = 'BACKPACK_PRODUCT' | 'BIKE_LIGHT_PRODUCT';
 
-export const products: Products = {
+export const products = {
     BACKPACK_PRODUCT: {
         id: 4,
         name: 'Sauce Labs Backpack',
@@ -17,5 +14,5 @@ export const products: Products = {
         id: 0,
         name: 'Sauce Labs Bike Light',
     }
-};
+} satisfies Record<ProductKey, Product>;
 

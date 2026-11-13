@@ -1,17 +1,13 @@
-type UserCredentials = {
-    username: string;
-    password: string;
-};
-
-type UserPersonalInfo = {
-    firstName: string;
-    lastName: string;
-    postalCode: string;
-}
-
 type User = {
-    credentials: UserCredentials;
-    personalInfo?: UserPersonalInfo;
+    credentials: {
+        username: string;
+        password: string;
+    };
+    personalInfo?: {
+        firstName: string;
+        lastName: string;
+        postalCode: string;
+    };
 }
 
 type UserKey = 'STANDARD_USER' | 'INVALID_USER';

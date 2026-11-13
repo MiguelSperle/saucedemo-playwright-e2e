@@ -81,9 +81,11 @@ npx playwright show-report
 .
 ├── .github/
 │   └── workflows/
-│       └── playwright.yml      # GitHub Actions workflow (CI)
+│       └── ci.yml      # GitHub Actions workflow (CI)
 ├── components/                 # Reusable UI components (shared across pages)
 │   └── header-component.ts
+├── constants
+│   └── index.ts
 ├── data/                       # Test data
 │   ├── products.ts
 │   └── users.ts
@@ -91,8 +93,11 @@ npx playwright show-report
 │   └── index.ts
 ├── pages/                      # Page Objects (one per page)
 │   ├── manager/
-│   │   └── PageManager.ts      # Centralizes access to all Page Objects
+│   │   └── page-manager.ts      # Centralizes access to all Page Objects
 │   ├── authentication-page.ts
+│   ├── checkout-complete-page.ts
+│   ├── checkout-information-page.ts
+│   ├── checkout-overview-page.ts
 │   ├── inventory-page.ts
 │   ├── product-details-page.ts
 │   └── shopping-cart-page.ts
@@ -100,6 +105,7 @@ npx playwright show-report
 │   ├── setup/
 │   │   └── auth.setup.ts       # Authenticate once and saves the session
 │   ├── authentication.spec.ts
+│   ├── checkout.spec.ts
 │   ├── product-filter.spec.ts
 │   └── shopping-cart.spec.ts
 ├── .gitignore                  # Files and folders ignored by Git
@@ -153,7 +159,7 @@ The `tests/setup/auth.setup.ts` file performs authentication once and saves the 
 
 ## 📐 Conventions
 
-- **Specs:** named with a noun, inside `tests/` (e.g. `shopping-cart.spec.ts`).
+- **Specs:** named with a noun, inside `tests/` (e.g. `authentication.spec.ts`).
 - **Page Objects:** named after the page, ending in `-page`, inside `pages/` (e.g. `inventory-page.ts`).
 - **Components:** named after the component, ending in `-component`, inside `components/` (e.g. `header-component.ts`).
 - **Test titles:** describe the expected behavior, in English (e.g. `should authenticate successfully`).

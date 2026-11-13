@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures';
 import { products } from '../data/products';
-import { AUTH_STATE_PATH } from '../config/auth-state';
+import { AUTH_STATE_PATH } from '../constants';
 
 test.use({ storageState: AUTH_STATE_PATH });
 

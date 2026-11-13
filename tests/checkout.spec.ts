@@ -1,8 +1,7 @@
 import { test, expect } from '../fixtures';
 import { users } from '../data/users';
 import { products } from '../data/products';
-import { errorMessages } from '../data/error-messages';
-import { AUTH_STATE_PATH } from '../config/auth-state';
+import { AUTH_STATE_PATH } from '../constants';
 
 test.use({ storageState: AUTH_STATE_PATH });
 
@@ -41,9 +40,7 @@ test.describe('checkout', () => {
 
         await pm.onCheckoutInformationPage().enterCheckoutInformation('', '', '');
 
-        await expect(pm.onCheckoutInformationPage().error).toHaveText(
-            errorMessages.checkoutInformation.FIRST_NAME_REQUIRED
-        );
+        await expect(pm.onCheckoutInformationPage().error).toHaveText('Error: First Name is required');
     });
 
     test('should display an error when the last name in the checkout information is empty', async ({ pm, page }) => {
@@ -55,9 +52,7 @@ test.describe('checkout', () => {
             users.STANDARD_USER.personalInfo.firstName, '', ''
         );
 
-        await expect(pm.onCheckoutInformationPage().error).toHaveText(
-            errorMessages.checkoutInformation.LAST_NAME_REQUIRED
-        );
+        await expect(pm.onCheckoutInformationPage().error).toHaveText('Error: Last Name is required');
     });
 
     test('should display an error when the postal code in the checkout information is empty', async ({ pm, page }) => {
@@ -71,8 +66,6 @@ test.describe('checkout', () => {
             ''
         );
 
-        await expect(pm.onCheckoutInformationPage().error).toHaveText(
-            errorMessages.checkoutInformation.POSTAL_CODE_REQUIRED
-        );
+        await expect(pm.onCheckoutInformationPage().error).toHaveText('Error: Postal Code is required');
     });
 });

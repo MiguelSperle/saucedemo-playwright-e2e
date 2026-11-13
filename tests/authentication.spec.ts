@@ -1,8 +1,7 @@
 import { test, expect } from '../fixtures';
 import { users } from '../data/users';
 import { products } from '../data/products';
-import { errorMessages } from '../data/error-messages';
-import { AUTH_STATE_PATH } from '../config/auth-state';
+import { AUTH_STATE_PATH } from '../constants';
 import { Cookie } from '@playwright/test';
 
 test.describe('authentication', () => {
@@ -24,19 +23,19 @@ test.describe('authentication', () => {
   test('should display an error when authentication credentials are empty', async ({ pm }) => {
     await pm.onAuthenticationPage().authenticate('', '');
 
-    await expect(pm.onAuthenticationPage().error).toHaveText(errorMessages.authentication.USERNAME_REQUIRED);
+    await expect(pm.onAuthenticationPage().error).toHaveText('Epic sadface: Username is required');
   });
 
   test('should display an error when authentication password is empty', async ({ pm }) => {
     await pm.onAuthenticationPage().authenticate(users.STANDARD_USER.credentials.username, '');
 
-    await expect(pm.onAuthenticationPage().error).toHaveText(errorMessages.authentication.PASSWORD_REQUIRED);
+    await expect(pm.onAuthenticationPage().error).toHaveText('Epic sadface: Password is required');
   });
 
   test('should display an error when authentication credentials are incorrect', async ({ pm }) => {
     await pm.onAuthenticationPage().authenticate(users.INVALID_USER.credentials.username, users.INVALID_USER.credentials.password);
 
-    await expect(pm.onAuthenticationPage().error).toHaveText(errorMessages.authentication.INCORRECT_CREDENTIALS);
+    await expect(pm.onAuthenticationPage().error).toHaveText('Epic sadface: Username and password do not match any user in this service');
   });
 
   test.describe('logout', () => {
@@ -68,7 +67,7 @@ test.describe('authentication', () => {
 
         await expect(page).toHaveURL('/');
         await expect(pm.onAuthenticationPage().error).toHaveText(
-          errorMessages.authentication.PROTECTED_PAGE(protectedURL.split('?')[0])
+          `Epic sadface: You can only access '${protectedURL.split('?')[0]}' when you are logged in.`
         );
       });
     };

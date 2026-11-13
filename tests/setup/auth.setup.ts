@@ -1,6 +1,6 @@
 import { test as setup, expect } from '../../fixtures';
 import { users } from '../../data/users';
-import { AUTH_STATE_PATH } from '../../config/auth-state';
+import { AUTH_STATE_PATH } from '../../constants'
 
 /**
  * Configuração do estado de autenticação para os testes E2E.
