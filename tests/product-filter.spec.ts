@@ -8,7 +8,9 @@ test.describe('product filter', () => {
         await pm.onInventoryPage().goto();
     });
 
-    test('should show products sorted by name from A to Z by default', async ({ pm }) => {
+    test('should sort products by name from A to Z', async ({ pm }) => {
+        await pm.onInventoryPage().sortBy('az');
+
         const productNames = await pm.onInventoryPage().productNames.allTextContents();
 
         expect(productNames).toEqual([...productNames].sort((a, b) => a.localeCompare(b)));

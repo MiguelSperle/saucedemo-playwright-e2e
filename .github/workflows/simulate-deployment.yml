@@ -1,0 +1,39 @@
+name: Simulate deployment
+
+# ============================================================================
+# O QUE ESTE ARQUIVO FAZ
+#
+# Ele faz o papel do pipeline de deploy da aplicação. Como o site testado
+# (saucedemo) não é nosso e não tem pipeline que possamos escutar, este
+# workflow "finge" que um deploy terminou: ao ser executado, envia o aviso
+# (repository_dispatch) que ativa o workflow "Sauce Demo Tests".
+#
+#   [Você clica em Run workflow]
+#         |
+#         v
+#   Simulate deployment  --(aviso: staging-deployed)-->  Sauce Demo Tests
+#
+# Num cenário real, este arquivo não existiria aqui: o aviso viria do
+# pipeline de deploy da aplicação.
+# ============================================================================
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_event:
+        description: Aviso de deploy a simular
+        type: choice
+        options: [staging-deployed, production-deployed]
+        default: staging-deployed
+
+permissions:
+  contents: write # necessário para enviar o repository_dispatch
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ inputs.deploy_event }}
+        run: gh api "repos/${{ github.repository }}/dispatches" -f event_type="$EVENT"
