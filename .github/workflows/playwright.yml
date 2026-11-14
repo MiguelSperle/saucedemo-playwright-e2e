@@ -1,75 +1,59 @@
-# ============================================================================
-# COMO ESTE WORKFLOW É ATIVADO
-#
-# Este workflow NÃO detecta deploys por conta própria. Quem o ativa é o
-# pipeline de deploy da aplicação, que, ao terminar o deploy com sucesso,
-# envia uma requisição para a API do GitHub:
-#
-#   POST https://api.github.com/repos/<usuario>/<este-repo>/dispatches
-#   body: {"event_type": "staging-deployed"}   ou  {"event_type": "production-deployed"}
-#
-# O que roda em cada caso:
-#   staging-deployed     -> smoke + regressão completa
-#   production-deployed  -> somente smoke
-#
-# Observações:
-#   - O arquivo precisa estar na branch padrão (main) para o gatilho funcionar.
-#   - A chamada exige um token com permissão de escrita neste repositório,
-#     guardado como secret no pipeline de deploy.
-# ============================================================================
-
-
-# ============================================================================
-# TOKEN DE ACESSO (necessário para o pipeline de deploy avisar este workflow)
-#
-# O QUE É
-#   Uma "senha de acesso" que prova ao GitHub que quem chama a API tem
-#   permissão de escrita neste repositório. Sem ela, a chamada de aviso
-#   (POST .../dispatches) é recusada e este workflow não é ativado.
-#
-# COMO GERAR (Personal Access Token fine-grained)
-#   1. GitHub > foto de perfil > Settings > Developer settings
-#      > Personal access tokens > Fine-grained tokens > Generate new token
-#   2. Defina um nome e uma data de expiração.
-#   3. Repository access: "Only select repositories" e marque SOMENTE este
-#      repositório (o de testes).
-#   4. Repository permissions: "Contents" = Read and write.
-#   5. Gere e copie o token na hora (o GitHub só o mostra uma vez).
-#
-# ============================================================================
-
 name: Playwright Tests
 
 on:
-  repository_dispatch:
-    types: [staging-deployed, production-deployed]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
 
-# Cancela execuções antigas do mesmo workflow/branch/evento quando uma nova começa
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.action }}
-  cancel-in-progress: false
+  group: playwright-tests-${{ github.event_name }}-${{ github.ref }}
+  # Cancela execuções antigas do workflow para dar lugar à nova execução, apenas em pull requests
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  context:
-    runs-on: ubuntu-latest # máquina virtual Linux fornecida pelo GitHub
-    outputs:
-      environment: ${{ steps.env.outputs.environment }} # staging ou production
-      run_regression: ${{ steps.env.outputs.run_regression }} # "true" ou "false"
+  full:
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
     steps:
-      - id: env # identificador do step, usado na linha acima
-        env: # joga os valores do GitHub em variáveis de ambiente do shell
-          ACTION: ${{ github.event.action }} # nome do aviso (staging-deployed or production-deployed)
-        run: |
-          if [ "$ACTION" = "staging-deployed" ]; then
-            environment=staging
-            run_regression=true
-          elif [ "$ACTION" = "production-deployed" ]; then
-            environment=production
-            run_regression=false
-          else
-            echo "Aviso não suportado: $ACTION"
-            exit 1
-          fi
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v6
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-full
+          path: playwright-report/
+          retention-days: 30
 
-          echo "environment=$environment" >> "$GITHUB_OUTPUT"
-          echo "run_regression=$run_regression" >> "$GITHUB_OUTPUT"
+  # Verificação periódica para verificar se os fluxos mais críticos do site funcionam conforme o esperado.
+  # Fizemos dessa forma, pois como não controlamos o deploy da aplicação que está sendo testada
+  # não conseguimos receber os status do deploy.
+  smoke:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --grep @smoke --project=chromium
+      - uses: actions/upload-artifact@v6
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-smoke
+          path: playwright-report/
+          retention-days: 7
