@@ -2,7 +2,7 @@
 
 End-to-end (E2E) test project for the [Sauce Demo](https://www.saucedemo.com) website, written with **Playwright** and **TypeScript**, following the **Page Object Model (POM)** pattern.
 
-> 📌 **Status:** work in progress.
+> 📌 **Status:** completed.
 
 ---
 
