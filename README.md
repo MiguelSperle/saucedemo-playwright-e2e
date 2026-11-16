@@ -58,10 +58,10 @@ npx playwright install
 npx playwright test
 
 # Run a specific file
-npx playwright test tests/shopping-cart.spec.ts
+npx playwright test tests/file-name.spec.ts
 
 # Run tests by title
-npx playwright test -g "should authenticate successfully"
+npx playwright test -g "specific test title"
 
 # Run with the Playwright UI mode
 npx playwright test --ui
