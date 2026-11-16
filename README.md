@@ -81,7 +81,7 @@ npx playwright show-report
 .
 ├── .github/
 │   └── workflows/
-│       └── ci.yml      # GitHub Actions workflow (CI)
+│       └── playwright.yml      # GitHub Actions workflow (CI)
 ├── components/                 # Reusable UI components (shared across pages)
 │   └── header-component.ts
 ├── constants
