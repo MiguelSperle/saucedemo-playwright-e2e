@@ -61,7 +61,7 @@ npx playwright test
 npx playwright test tests/shopping-cart.spec.ts
 
 # Run tests by title
-npx playwright test -g "sorts products by name"
+npx playwright test -g "should authenticate successfully"
 
 # Run with the Playwright UI mode
 npx playwright test --ui
