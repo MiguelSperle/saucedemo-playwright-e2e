@@ -151,6 +151,10 @@ In the specs, import `test` and `expect` from the fixtures instead of directly f
 
 The files in `data/` hold the data used by the tests (products and users), avoiding repeated values across the specs.
 
+### Constants
+
+The constants in `constants/index.ts` store shared values used across the tests, avoiding repeated definitions across the specs.
+
 ### Reused authentication
 
 The `tests/setup/auth.setup.ts` file performs authentication once and saves the session to `playwright/.auth/user.json`. The remaining tests reuse that session and start already authenticated, which makes the run faster. The `user.json` file is auto-generated and should not be edited manually.
