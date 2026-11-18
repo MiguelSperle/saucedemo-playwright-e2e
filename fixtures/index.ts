@@ -5,14 +5,12 @@ import { products } from '../data/products';
 /**
  * Responsabilidades:
  * - Instanciar os Page Objects e disponibilizá-los automaticamente aos testes.
- * - Preparar o estado necessário para o teste sob demanda (fixtures de setup),
- *   evitando repetir passos de UI que não fazem parte do cenário testado.
+ * - Preparar o estado necessário para o teste sob demanda.
  * 
  * Estratégia para preparar o estado (em ordem de preferência):
  * 1. API: sempre que disponível, criar o recurso diretamente pela API.
  * 2. Storage (localStorage): quando não há API para o
  *    recurso, gravar o estado direto no storage do navegador.
- *
 **/
 
 type TestFixtures = {
