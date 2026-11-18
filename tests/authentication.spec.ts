@@ -12,12 +12,12 @@ test.describe('authentication', () => {
   test('should authenticate successfully', { tag: '@smoke' }, async ({ pm, page }) => {
     await pm.onAuthenticationPage().authenticate(users.STANDARD_USER.credentials.username, users.STANDARD_USER.credentials.password);
 
-    await expect(page).toHaveURL('/inventory.html');
-
     const cookies: Cookie[] = await page.context().cookies();
     const sessionCookie = cookies.find(cookie => cookie.name === 'session-username');
 
     expect(sessionCookie).toBeDefined();
+
+    await expect(page).toHaveURL('/inventory.html');
   });
 
   test('should display an error when authentication credentials are empty', async ({ pm }) => {
@@ -46,12 +46,12 @@ test.describe('authentication', () => {
 
       await pm.onInventoryPage().logout();
 
-      await expect(page).toHaveURL('/');
-
       const cookies: Cookie[] = await page.context().cookies();
       const sessionCookie = cookies.find(cookie => cookie.name === 'session-username');
 
       expect(sessionCookie).toBeUndefined();
+
+      await expect(page).toHaveURL('/');
     });
   });
 
